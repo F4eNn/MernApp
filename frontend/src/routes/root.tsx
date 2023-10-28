@@ -1,5 +1,5 @@
 import { Outlet, NavLink, Link } from 'react-router-dom';
-import { Wrapper } from '../components/UI/Wrapper';
+import { Wrapper } from '../components/ui/Wrapper';
 import { navPaths } from '../constants/navigation';
 
 const navArray = [
@@ -16,10 +16,10 @@ const Root = () => {
 							<Link to={navPaths.home.path}>Todo</Link>
 						</h1>
 						<ul className='flex gap-5'>
-							{navArray.map(([name, path]) => {
+							{navArray.map(([name, path], idx) => {
 								return (
-									<li>
-										<NavLink className='colors-300 p-3 hover:text-gray ' to={path}>
+									<li key={idx}>
+										<NavLink className='colors-300 hover:text-gray p-3 ' to={path}>
 											{name}
 										</NavLink>
 									</li>
