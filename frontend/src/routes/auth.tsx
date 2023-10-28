@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { AuthCard } from '../components/auth/Card';
+import { Form } from '../components/auth/Form';
 import { Input } from '../components/auth/Input';
 import { Label } from '../components/auth/Label';
 import { FormControl } from '../components/auth/FormControl';
@@ -10,7 +10,7 @@ const Auth = () => {
 
 	if (q === 'signup') {
 		return (
-			<AuthCard title='Signup'>
+			<Form title='Signup'>
 				<FormControl>
 					<Label title='E-mail' htmlFor='email' />
 					<Input id='email' type='text' placeholder='john@doe.com' />
@@ -23,12 +23,12 @@ const Auth = () => {
 					<Label title='Confirm Password' htmlFor='confirm' />
 					<Input type='password' id='confirmy' />
 				</FormControl>
-			</AuthCard>
+			</Form>
 		);
 	}
 
 	return (
-		<AuthCard title='Login'>
+		<Form title='Login'>
 			<FormControl>
 				<Label title='E-mail' />
 				<Input type='text' placeholder='john@doe.com' />
@@ -37,7 +37,7 @@ const Auth = () => {
 				<Label title='Password' />
 				<Input type='password' />
 			</FormControl>
-		</AuthCard>
+		</Form>
 	);
 };
 
