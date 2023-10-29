@@ -3,13 +3,17 @@ import express from 'express';
 
 import mongoose from 'mongoose';
 
-import {router as authRouter} from './routes/todo';
+import { router as todoRouter } from './routes/todo';
+import { handleError } from './middleware/error-handler';
 
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.lhyndcn.mongodb.net/todo-app?retryWrites=true&w=majority`;
 
 const server = express();
 
-server.use(authRouter);
+server.use(todoRouter);
+
+
+server.use(handleError)
 
 mongoose
 	.connect(MONGO_URI)
