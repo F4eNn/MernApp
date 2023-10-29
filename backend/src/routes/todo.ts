@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { postTodo, getTodo } from '../controller/todo';
+import { postTodo, getTodo } from '../controllers/todo';
 import { body } from 'express-validator';
 
 export const router = Router();
