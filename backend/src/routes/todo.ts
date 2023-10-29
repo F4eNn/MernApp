@@ -7,7 +7,7 @@ export const router = Router();
 
 router.post(
 	'/todo',
-	body('title')
+	body('todo')
 		.trim()
 		.not()
 		.isEmpty()

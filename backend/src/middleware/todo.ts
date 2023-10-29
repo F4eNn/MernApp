@@ -7,10 +7,10 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 	const errors: Result = validationResult(req);
 
 	if (!errors.isEmpty()) {
-		const { msg, path } = errors.mapped().todo;
+		const { msg, path } = errors.mapped().title;
 		return res.status(422).json({ msg, path });
 	}
-	const todo = new Todo({ todo: req.body.todo });
+	const todo = new Todo({ title: req.body.title });
 	try {
 		await todo.save();
 		return res.status(201).json({ message: 'Created Todo' });
