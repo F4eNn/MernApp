@@ -5,7 +5,6 @@ import { validationResult, Result } from 'express-validator';
 
 export const postTodo = async (req: Request, res: Response, next: NextFunction) => {
 	const errors: Result = validationResult(req);
-
 	if (!errors.isEmpty()) {
 		const { msg, path } = errors.mapped().todo;
 		return res.status(422).json({ msg, path });

@@ -7,7 +7,7 @@ import { navPaths } from './constants/navigation';
 import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import Auth from './routes/auth';
-import Index from './routes/Index';
+import Index, { action as indexAction } from './routes/Index';
 
 const router = createBrowserRouter([
 	{
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
 		element: <Root />,
 		errorElement: <ErrorPage />,
 		children: [
-			{ index: true, element: <Index /> },
+			{ index: true, element: <Index />, action: indexAction },
 			{
 				path: navPaths.auth.path,
 				element: <Auth />,

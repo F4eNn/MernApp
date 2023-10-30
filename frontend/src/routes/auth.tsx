@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { Form } from '../components/auth/Form';
 import { Input } from '../components/ui/Input';
-import { Label } from '../components/auth/Label';
-import { FormControl } from '../components/auth/FormControl';
+import { Label } from '../components/ui/Label';
+import { FormControl } from '../components/ui/FormControl';
 
 const Auth = () => {
 	const { search } = useLocation();
