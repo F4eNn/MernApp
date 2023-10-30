@@ -12,9 +12,7 @@ router.post(
 		.isEmpty()
 		.withMessage("Can't be empty.")
 		.isLength({ min: 3 })
-		.withMessage('Min. 3 characters.')
-		.isAlphanumeric()
-		.withMessage('Input must contain only digits and letters.'),
+		.withMessage('Min. 3 characters.'),
 	postTodo,
 );
 router.get('/todo', getTodo);
