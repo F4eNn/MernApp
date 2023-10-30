@@ -1,20 +1,21 @@
 import { Router } from 'express';
-import { postTodo, getTodo } from '../controllers/todo';
+import { postTodo, getTodo, updateTodo } from '../controllers/todo';
 import { body } from 'express-validator';
 
 export const router = Router();
 
-router.post(
-	'/todo',
+const validateTodo = [
 	body('todo')
 		.trim()
 		.not()
 		.isEmpty()
 		.withMessage("Can't be empty.")
 		.isLength({ min: 3 })
-		.withMessage('Min. 3 characters.')
-		.isAlphanumeric()
-		.withMessage('Input must contain only digits and letters.'),
-	postTodo,
-);
+		.withMessage('Min. 3 characters.'),
+];
+
+router.post('/todo', validateTodo, postTodo);
+
 router.get('/todo', getTodo);
+
+router.put('/todo/:todoID', validateTodo, updateTodo);
