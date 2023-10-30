@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const Schema = mongoose.Schema;
+import { Schema, model, HydratedDocumentFromSchema } from 'mongoose';
 
 const todoSchema = new Schema(
 	{
@@ -12,4 +10,6 @@ const todoSchema = new Schema(
 	{ timestamps: true },
 );
 
-export const Todo = mongoose.model('Todo', todoSchema);
+export const Todo = model('Todo', todoSchema);
+
+export type TodoType = Pick<HydratedDocumentFromSchema<typeof todoSchema>, 'save' | 'todo'>;
