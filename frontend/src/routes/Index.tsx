@@ -35,49 +35,34 @@ export async function loader() {
 }
 
 const Index = () => {
-	const inputRef = useRef<HTMLInputElement>(null)
 	const error = useActionData() as string;
 	const { data } = useLoaderData() as TodoItems;
-	const submit = () => {
-		if(inputRef.current){
-			console.log(inputRef.current.value);
-			inputRef.current.value = ''
-		}
-	};
+
 	return (
 		<>
 			<Card id='progress'>
 				<h1 className='text-2xl font-[500]'>Your Tasks</h1>
 			</Card>
 			<Card id='tasks' className='mt-10 py-8'>
-				<Form method='POST' className='flex gap-5' onSubmit={submit}>
+				<Form method='POST' className='flex gap-5'>
 					<FormControl>
 						<Label title='' htmlFor='createTodo' />
-						<Input
-							ref={inputRef}
-							className='py-3'
-							id='createTodo'
-							placeholder='Add your todo'
-							name='todo'
-							defaultValue={'sad'}
-						/>
+						<Input className='py-3' id='createTodo' placeholder='Add your todo' name='todo' defaultValue={'sad'} />
 						<ErrorMsg errorMsg={error} />
 					</FormControl>
 					<Button type='submit' title='Add' className='w-[100px] rounded-md' />
 				</Form>
-				<Form className='mt-8'>
-					<ul className='space-y-5'>
-						{data.length > 0 ? (
-							data.map(({ _id, todo }) => {
-								return <Item key={_id} todo={todo} />;
-							})
-						) : (
-							<li className='flex justify-center'>
-								<i>Create your first todo</i>
-							</li>
-						)}
-					</ul>
-				</Form>
+				<ul className='mt-8 space-y-5'>
+					{data.length > 0 ? (
+						data.map(todo => {
+							return <Item key={todo._id} {...todo} />;
+						})
+					) : (
+						<li className='flex justify-center'>
+							<i>Create your first todo</i>
+						</li>
+					)}
+				</ul>
 			</Card>
 		</>
 	);
