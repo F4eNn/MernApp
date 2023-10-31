@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postTodo, getTodo, updateTodo } from '../controllers/todo';
+import { postTodo, getTodo } from '../controllers/todo';
 import { body } from 'express-validator';
 
 export const router = Router();
@@ -14,8 +14,6 @@ const validateTodo = [
 		.withMessage('Min. 3 characters.'),
 ];
 
-router.post('/todo', validateTodo, postTodo);
+router.put('/todo', validateTodo, postTodo);
 
 router.get('/todo', getTodo);
-
-router.put('/todo/:todoID', validateTodo, updateTodo);
