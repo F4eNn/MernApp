@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { Card } from '../components/ui/Card';
 import { Form, redirect, useActionData, useLoaderData } from 'react-router-dom';
 import { Input } from '../components/ui/Input';
@@ -35,12 +35,14 @@ export async function loader() {
 }
 
 const Index = () => {
-	const [clearField, setClearField] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null)
 	const error = useActionData() as string;
 	const { data } = useLoaderData() as TodoItems;
-
 	const submit = () => {
-		setClearField('');
+		if(inputRef.current){
+			console.log(inputRef.current.value);
+			inputRef.current.value = ''
+		}
 	};
 	return (
 		<>
@@ -52,12 +54,12 @@ const Index = () => {
 					<FormControl>
 						<Label title='' htmlFor='createTodo' />
 						<Input
-							onChange={e => setClearField(e.target.value)}
-							value={clearField}
+							ref={inputRef}
 							className='py-3'
 							id='createTodo'
 							placeholder='Add your todo'
 							name='todo'
+							defaultValue={'sad'}
 						/>
 						<ErrorMsg errorMsg={error} />
 					</FormControl>
