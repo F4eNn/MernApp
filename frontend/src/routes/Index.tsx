@@ -8,20 +8,13 @@ import { createTodos, getTodos } from '../utils/todos';
 import { Label } from '../components/ui/Label';
 import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
-import { TodoItems } from '../types/types';
-
-type ResultType = {
-	errorMsg: string;
-	path: string;
-	ok: boolean;
-};
+import { ResultType, TodoItems } from '../types/types';
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
-	const todo = Object.fromEntries(formData);
-	let error: string;
+	const { todo } = Object.fromEntries(formData);
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
-
+	let error: string;
 	const result: ResultType = await createTodos(todo);
 	if (!result.ok) {
 		error = result.errorMsg;
@@ -51,7 +44,7 @@ const Index = () => {
 						<Input className='py-3' id='createTodo' placeholder='Add your todo' name='todo' />
 						<ErrorMsg errorMsg={error} />
 					</FormControl>
-					<Button name='intent' value='create-todo' type='submit' title='Add' className='w-[100px] rounded-md' />
+					<Button type='submit' title='Add' className='w-[100px] rounded-md' />
 				</Form>
 				<ul className='mt-8 space-y-5'>
 					{data.length > 0 ? (
