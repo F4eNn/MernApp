@@ -25,3 +25,16 @@ export const getTodos = async () => {
 		console.error(err);
 	}
 };
+export const deleteTodo = async (todoID: FormDataEntryValue) => {
+	console.log(todoID);
+	try {
+		const res = await fetch(`${BACKEND_URL}/todo`, {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ todoID }),
+		});
+		return res;
+	} catch (error) {
+		console.error(error);
+	}
+};

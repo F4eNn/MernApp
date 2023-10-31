@@ -2,7 +2,7 @@ import { MdDelete } from 'react-icons/md';
 import { FiEdit } from 'react-icons/fi';
 import { Input } from '../ui/Input';
 import { TodoItem } from '../../types/types';
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 
 export const Item = ({ todo, _id }: TodoItem) => {
 	return (
@@ -18,9 +18,18 @@ export const Item = ({ todo, _id }: TodoItem) => {
 				<Link aria-label='edit task' to={`/edit/${_id}`} state={{ todo }} className='colors-300 hover:text-primary p-3'>
 					<FiEdit size='25px' />
 				</Link>
-				<button aria-label='delete task' className='colors-300 hover:text-error p-3'>
-					<MdDelete size='25px' />
-				</button>
+				<Form method='DELETE'>
+					<input type='hidden' name='todoID' value={_id} />
+					<button
+						aria-label='delete task'
+						name='intent'
+						value='delete-todo'
+						type='submit'
+						className='colors-300 hover:text-error p-3'
+					>
+						<MdDelete size='25px' />
+					</button>
+				</Form>
 			</div>
 		</li>
 	);

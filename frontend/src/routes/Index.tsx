@@ -4,7 +4,7 @@ import { Input } from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { Item } from '../components/tasks/Item';
 
-import { createTodos, getTodos } from '../utils/todos';
+import { createTodos, deleteTodo, getTodos } from '../utils/todos';
 import { Label } from '../components/ui/Label';
 import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
@@ -12,15 +12,21 @@ import { ResultType, TodoItems } from '../types/types';
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
-	const { todo } = Object.fromEntries(formData);
+	const { todo, intent, todoID } = Object.fromEntries(formData);
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
 	let error: string;
-	const result: ResultType = await createTodos(todo);
-	if (!result.ok) {
-		error = result.errorMsg;
-		return error;
+
+	if (intent === 'create-todo') {
+		const result: ResultType = await createTodos(todo);
+		if (!result.ok) {
+			error = result.errorMsg;
+			return error;
+		}
+		todoForm.reset();
 	}
-	todoForm.reset();
+	if (intent === 'delete-todo') {
+		await deleteTodo(todoID);
+	}
 	return redirect('/');
 }
 
@@ -44,7 +50,7 @@ const Index = () => {
 						<Input className='py-3' id='createTodo' placeholder='Add your todo' name='todo' />
 						<ErrorMsg errorMsg={error} />
 					</FormControl>
-					<Button type='submit' title='Add' className='w-[100px] rounded-md' />
+					<Button name='intent' value='create-todo' type='submit' title='Add' className='w-[100px] rounded-md' />
 				</Form>
 				<ul className='mt-8 space-y-5'>
 					{data.length > 0 ? (
