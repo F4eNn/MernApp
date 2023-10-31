@@ -11,3 +11,9 @@ export type TodoItem = {
 export type TodoItems = {
 	data: TodoItem[];
 };
+
+export type ResultType = {
+	errorMsg: string;
+	path: string;
+	ok: boolean;
+};
