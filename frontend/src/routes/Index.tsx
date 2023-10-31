@@ -15,29 +15,17 @@ type ResultType = {
 	path: string;
 	ok: boolean;
 };
-type ActionResType = {
-	error: string;
-	oldValue: string;
-	todoID: string;
-};
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
-	const data = Object.fromEntries(formData);
-	const resObj: Partial<ActionResType> = {};
+	const todo = Object.fromEntries(formData);
+	let error: string;
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
 
-	if (data.intent === 'create-todo') {
-		const result: ResultType = await createTodos(data.todo);
-		if (!result.ok) {
-			resObj.error = result.errorMsg;
-			return resObj;
-		}
-	}
-	if (data.intent === 'edit-todo') {
-		resObj.oldValue = data.oldValue as string;
-		todoForm.reset();
-		return resObj;
+	const result: ResultType = await createTodos(todo);
+	if (!result.ok) {
+		error = result.errorMsg;
+		return error;
 	}
 	todoForm.reset();
 	return redirect('/');
@@ -49,7 +37,7 @@ export async function loader() {
 }
 
 const Index = () => {
-	const action = useActionData() as ActionResType;
+	const error = useActionData() as string;
 	const { data } = useLoaderData() as TodoItems;
 	return (
 		<>
@@ -60,14 +48,8 @@ const Index = () => {
 				<Form id='todoForm' method='POST' className='flex gap-5'>
 					<FormControl>
 						<Label title='' htmlFor='createTodo' />
-						<Input
-							className='py-3'
-							id='createTodo'
-							placeholder='Add your todo'
-							name='todo'
-							defaultValue={action && action.oldValue}
-						/>
-						{action && <ErrorMsg errorMsg={action.error} />}
+						<Input className='py-3' id='createTodo' placeholder='Add your todo' name='todo' />
+						<ErrorMsg errorMsg={error} />
 					</FormControl>
 					<Button name='intent' value='create-todo' type='submit' title='Add' className='w-[100px] rounded-md' />
 				</Form>
