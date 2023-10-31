@@ -38,3 +38,16 @@ export const getTodo = async (req: Request, res: Response, next: NextFunction) =
 		next(new CustomError('Not found any todos', 404));
 	}
 };
+
+export const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
+	const todoID = req.body.todoID;
+	try {
+		const todo = await Todo.findByIdAndDelete(todoID);
+		if (!todo) {
+			throw new CustomError("Todo doesn't exist", 404, 'Could not delete todo');
+		}
+		res.status(200).json({ message: 'Delete successfully', ok: true });
+	} catch (error) {
+		next();
+	}
+};

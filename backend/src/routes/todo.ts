@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postTodo, getTodo } from '../controllers/todo';
+import { postTodo, getTodo, deleteTodo } from '../controllers/todo';
 import { body } from 'express-validator';
 
 export const router = Router();
@@ -17,3 +17,5 @@ const validateTodo = [
 router.put('/todo', validateTodo, postTodo);
 
 router.get('/todo', getTodo);
+
+router.delete('/todo', deleteTodo);
