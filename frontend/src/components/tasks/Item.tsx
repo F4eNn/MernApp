@@ -1,8 +1,10 @@
 import { MdDelete } from 'react-icons/md';
+import { FiEdit } from 'react-icons/fi';
 import { Input } from '../ui/Input';
 import { TodoItem } from '../../types/types';
+import { Form } from 'react-router-dom';
 
-export const Item = ({ todo }: Omit<TodoItem, '_id'>) => {
+export const Item = ({ todo, _id }: TodoItem) => {
 	return (
 		<li className='flex justify-between'>
 			<div className='flex items-center gap-6'>
@@ -12,9 +14,18 @@ export const Item = ({ todo }: Omit<TodoItem, '_id'>) => {
 				/>
 				<span className='text-xl'>{todo}</span>
 			</div>
-			<button aria-label='delete task' className='colors-300 hover:text-error p-3'>
-				<MdDelete size='25px' />
-			</button>
+			<div className='items-centers flex'>
+				<Form method='PUT'>
+					<input type='hidden' name='oldValue' value={todo} />
+					<input type='hidden' name='todoID' value={_id} />
+					<button aria-label='edit task' name='intent' value='edit-todo' className='colors-300 hover:text-primary p-3'>
+						<FiEdit size='25px' />
+					</button>
+				</Form>
+				<button aria-label='delete task' className='colors-300 hover:text-error p-3'>
+					<MdDelete size='25px' />
+				</button>
+			</div>
 		</li>
 	);
 };
