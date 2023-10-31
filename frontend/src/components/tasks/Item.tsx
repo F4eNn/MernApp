@@ -2,7 +2,7 @@ import { MdDelete } from 'react-icons/md';
 import { FiEdit } from 'react-icons/fi';
 import { Input } from '../ui/Input';
 import { TodoItem } from '../../types/types';
-import { Form } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const Item = ({ todo, _id }: TodoItem) => {
 	return (
@@ -15,13 +15,9 @@ export const Item = ({ todo, _id }: TodoItem) => {
 				<span className='text-xl'>{todo}</span>
 			</div>
 			<div className='items-centers flex'>
-				<Form method='PUT'>
-					<input type='hidden' name='oldValue' value={todo} />
-					<input type='hidden' name='todoID' value={_id} />
-					<button aria-label='edit task' name='intent' value='edit-todo' className='colors-300 hover:text-primary p-3'>
-						<FiEdit size='25px' />
-					</button>
-				</Form>
+				<Link aria-label='edit task' to={`/edit/${_id}`} state={{ todo }} className='colors-300 hover:text-primary p-3'>
+					<FiEdit size='25px' />
+				</Link>
 				<button aria-label='delete task' className='colors-300 hover:text-error p-3'>
 					<MdDelete size='25px' />
 				</button>
