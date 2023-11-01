@@ -16,21 +16,24 @@ export async function action({ request }: { request: Request }) {
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
 	let error: string;
 
-	if (intent === 'create-todo') {
-		const result: ResultType = await putTodo({ todo, todoID });
-		if (!result.ok) {
-			error = result.errorMsg;
-			return error;
-		}
-		todoForm.reset();
-	}
-	if (intent === 'delete-todo') {
-		await deleteTodo(todoID);
-	}
+	switch (intent) {
+		case 'create-todo':
+			const result: ResultType = await putTodo({ todo, todoID });
+			if (!result.ok) {
+				error = result.errorMsg;
+				return error;
+			}
+			todoForm.reset();
+			break;
 
-	if (intent === 'todo-is-done') {
-		const parseStatus = JSON.parse(isDoneTodo as string);
-		await putTodo({ isDone: parseStatus, todoID });
+		case 'delete-todo':
+			await deleteTodo(todoID);
+			break;
+
+		case 'todo-is-done':
+			const parseStatus = JSON.parse(isDoneTodo as string);
+			await putTodo({ isDone: parseStatus, todoID });
+			break;
 	}
 	return redirect('/');
 }
