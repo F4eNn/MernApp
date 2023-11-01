@@ -5,6 +5,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import { router as todoRouter } from './routes/todo';
+import { router as authRouter } from './routes/auth';
 import { handleError } from './middleware/error-handler';
 
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.lhyndcn.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
@@ -21,6 +22,7 @@ server.use((req, res, next) => {
 });
 
 server.use(todoRouter);
+server.use(authRouter);
 
 server.use(handleError);
 
