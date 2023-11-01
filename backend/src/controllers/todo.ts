@@ -10,25 +10,26 @@ const updateTodo = async (todoID: string, newTodo?: string, isDone?: boolean) =>
 	}
 	if (newTodo) {
 		todo.todo = newTodo;
+	} else if (isDone !== undefined) {
+		todo.isDone = isDone ? false : true;
 	}
-	if (isDone) {
-		todo.isDone = isDone;
-	}
+
 	await todo.save();
 };
 
 export const postTodo = async (req: Request, res: Response, next: NextFunction) => {
-	if (validationResult(req, res)) return;
-
-	const todoID = req.body.todoID;
 	const newTitle = req.body.todo;
+	if (newTitle) {
+		if (validationResult(req, res)) return;
+	}
+	const todoID = req.body.todoID;
 	const isDone = req.body.isDone;
 	try {
 		if (todoID) {
 			await updateTodo(todoID, newTitle, isDone);
 			return res.status(200).json({ message: 'Updated successfully!', ok: true });
 		}
-		const todo = new Todo({ todo: newTitle, isDone: isDone ?? false });
+		const todo = new Todo({ todo: newTitle, isDone: false });
 		await todo.save();
 		return res.status(201).json({ message: 'Created Todo' });
 	} catch (err) {
