@@ -34,7 +34,6 @@ export const getTodos = async () => {
 	}
 };
 export const deleteTodo = async (todoID: FormDataEntryValue) => {
-	console.log(todoID);
 	try {
 		const res = await fetch(`${BACKEND_URL}/todo`, {
 			method: 'DELETE',
