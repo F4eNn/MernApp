@@ -16,12 +16,13 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 	if (validationResult(req, res)) return;
 	const todoID = req.body.todoID;
 	const newTitle = req.body.todo;
+	const isDone = req.body.isDone
 	try {
 		if (todoID) {
 			await updateTodo(todoID, newTitle);
 			return res.status(200).json({ message: 'Updated successfully!', ok: true });
 		}
-		const todo = new Todo({ todo: newTitle });
+		const todo = new Todo({ todo: newTitle, isDone: isDone ?? false });
 		await todo.save();
 		return res.status(201).json({ message: 'Created Todo' });
 	} catch (err) {
