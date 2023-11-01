@@ -25,17 +25,19 @@ export const Item = ({ todo, _id, isDone: status }: TodoItem) => {
 				>
 					{isDone && <AiOutlineCheck size='25px' />}
 				</button>
-				<span className={cn('text-xl ', isDone && 'italic line-through')}>{todo}</span>
+				<span className={cn('text-xl ', isDone && 'italic line-through text-secondary')}>{todo}</span>
 			</Form>
-			<div className='items-centers flex'>
-				<Link
-					aria-label='edit task'
-					to={`/edit/${_id}`}
-					state={{ todo }}
-					className='colors-300 git hover:text-primary p-3'
-				>
-					<FiEdit size='25px' />
-				</Link>
+			<div className='items-centers flex '>
+				{!isDone && (
+					<Link
+						aria-label='edit task'
+						to={`/edit/${_id}`}
+						state={{ todo }}
+						className='colors-300 git hover:text-primary p-3'
+					>
+						<FiEdit size='25px' />
+					</Link>
+				)}
 				<Form method='DELETE'>
 					<input type='hidden' name='todoID' value={_id} />
 					<button
