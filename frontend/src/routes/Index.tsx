@@ -10,7 +10,7 @@ import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
 import { ResultType, TodoItems } from '../types/types';
 
-export async function action({ request }: { request: Request }) {
+export const action = async ({ request }: { request: Request }) => {
 	const formData = await request.formData();
 	const { todo, intent, todoID, isDoneTodo } = Object.fromEntries(formData);
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
@@ -36,12 +36,12 @@ export async function action({ request }: { request: Request }) {
 			break;
 	}
 	return redirect('/');
-}
+};
 
-export async function loader() {
+export const loader = async () => {
 	const todos = await getTodos();
 	return todos;
-}
+};
 
 const Index = () => {
 	const error = useActionData() as string;
