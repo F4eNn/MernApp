@@ -1,11 +1,19 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const createTodos = async (todo: FormDataEntryValue, todoID?: string) => {
+export const putTodo = async ({
+	todo,
+	todoID,
+	isDone,
+}: {
+	todo?: FormDataEntryValue;
+	todoID?: FormDataEntryValue;
+	isDone?: FormDataEntryValue;
+}) => {
 	try {
 		const res = await fetch(`${BACKEND_URL}/todo`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ todo, todoID }),
+			body: JSON.stringify({ todo, todoID, isDone: isDone ? false : true }),
 		});
 		if (!res.ok || res.status !== 201) {
 			const error = await res.json();
