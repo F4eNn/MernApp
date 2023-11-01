@@ -7,6 +7,7 @@ export type PropsWithChildren = {
 export type TodoItem = {
 	_id: string;
 	todo: string;
+	isDone: boolean
 };
 export type TodoItems = {
 	data: TodoItem[];
