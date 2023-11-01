@@ -16,4 +16,4 @@ const todoSchema = new Schema(
 
 export const Todo = model('Todo', todoSchema);
 
-export type TodoType = Pick<HydratedDocumentFromSchema<typeof todoSchema>, 'save' | 'todo'>;
+export type TodoType = Pick<HydratedDocumentFromSchema<typeof todoSchema>, 'save' | 'todo' | 'isDone'>;

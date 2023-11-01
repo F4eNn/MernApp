@@ -1,25 +1,31 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { Todo, TodoType } from '../models/todo';
 import { CustomError } from '../models/custom-error';
 import { validationResult } from '../utils/utils';
 
-const updateTodo = async (todoID: string, newTodo: string) => {
+const updateTodo = async (todoID: string, newTodo?: string, isDone?: boolean) => {
 	const todo: TodoType | null = await Todo.findById(todoID);
 	if (!todo) {
 		throw new CustomError("Todo doesn't exist", 404);
 	}
-	todo.todo = newTodo;
+	if (newTodo) {
+		todo.todo = newTodo;
+	}
+	if (isDone) {
+		todo.isDone = isDone;
+	}
 	await todo.save();
 };
 
 export const postTodo = async (req: Request, res: Response, next: NextFunction) => {
 	if (validationResult(req, res)) return;
+
 	const todoID = req.body.todoID;
 	const newTitle = req.body.todo;
-	const isDone = req.body.isDone
+	const isDone = req.body.isDone;
 	try {
 		if (todoID) {
-			await updateTodo(todoID, newTitle);
+			await updateTodo(todoID, newTitle, isDone);
 			return res.status(200).json({ message: 'Updated successfully!', ok: true });
 		}
 		const todo = new Todo({ todo: newTitle, isDone: isDone ?? false });
