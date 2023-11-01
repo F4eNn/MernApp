@@ -6,24 +6,21 @@ import { validationResult } from '../utils/utils';
 const updateTodo = async (todoID: string, newTodo?: string, isDone?: boolean) => {
 	const todo: TodoType | null = await Todo.findById(todoID);
 	if (!todo) {
-		throw new CustomError("Todo doesn't exist", 404);
+		throw new CustomError("Todo doesn't exist", 404, 'Could not update todo');
 	}
 	if (newTodo) {
 		todo.todo = newTodo;
 	} else if (isDone !== undefined) {
 		todo.isDone = isDone ? false : true;
 	}
-
 	await todo.save();
 };
 
 export const postTodo = async (req: Request, res: Response, next: NextFunction) => {
-	const newTitle = req.body.todo;
+	const { todoID, isDone, todo: newTitle } = req.body;
 	if (newTitle) {
 		if (validationResult(req, res)) return;
 	}
-	const todoID = req.body.todoID;
-	const isDone = req.body.isDone;
 	try {
 		if (todoID) {
 			await updateTodo(todoID, newTitle, isDone);
@@ -32,9 +29,13 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 		const todo = new Todo({ todo: newTitle, isDone: false });
 		await todo.save();
 		return res.status(201).json({ message: 'Created Todo' });
-	} catch (err) {
-		const error = new CustomError("Can't add todo", 500, 'server issue');
-		next(error);
+	} catch (error) {
+		console.log(error);
+		if (error instanceof CustomError) {
+			return next(error);
+		}
+		const err = new CustomError("Can't add or update todo", 500, 'server issue');
+		next(err);
 	}
 };
 
@@ -56,6 +57,10 @@ export const deleteTodo = async (req: Request, res: Response, next: NextFunction
 		}
 		res.status(200).json({ message: 'Delete successfully', ok: true });
 	} catch (error) {
-		next();
+		console.log();
+		if (error instanceof CustomError) {
+			return next(error);
+		}
+		next(error);
 	}
 };
