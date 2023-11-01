@@ -6,12 +6,13 @@ import { TodoItem } from '../../types/types';
 import { Form, Link } from 'react-router-dom';
 import { cn } from '../../utils/utils';
 
-export const Item = ({ todo, _id }: TodoItem) => {
-	let isDone;
+export const Item = ({ todo, _id, isDone: status }: TodoItem) => {
+	let isDone = status;
 	return (
 		<li className='flex justify-between'>
 			<Form method='POST' className='flex items-center gap-6'>
 				<input type='hidden' name='todoID' value={_id} />
+				<input type='hidden' name='isDoneTodo' value={JSON.stringify(isDone)} />
 				<button
 					type='submit'
 					name='intent'

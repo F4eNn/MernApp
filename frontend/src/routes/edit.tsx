@@ -6,12 +6,12 @@ import Button from '../components/ui/Button';
 import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
 import { ResultType } from '../types/types';
-import { createTodos } from '../utils/todos';
+import { putTodo } from '../utils/todos';
 
 export const action = async ({ request, params }: { request: Request; params: Params }) => {
 	const formData = await request.formData();
 	const { todo } = Object.fromEntries(formData);
-	const result: ResultType = await createTodos(todo, params.todoID);
+	const result: ResultType = await putTodo({ todo, todoID: params.todoID });
 	let error: string;
 	if (!result.ok) {
 		error = result.errorMsg;

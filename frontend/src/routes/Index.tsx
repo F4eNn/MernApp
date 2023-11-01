@@ -4,7 +4,7 @@ import { Input } from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { Item } from '../components/tasks/Item';
 
-import { createTodos, deleteTodo, getTodos } from '../utils/todos';
+import { putTodo, deleteTodo, getTodos } from '../utils/todos';
 import { Label } from '../components/ui/Label';
 import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
@@ -12,12 +12,12 @@ import { ResultType, TodoItems } from '../types/types';
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
-	const { todo, intent, todoID } = Object.fromEntries(formData);
+	const { todo, intent, todoID, isDoneTodo } = Object.fromEntries(formData);
 	const todoForm = document.getElementById('todoForm') as HTMLFormElement;
 	let error: string;
 
 	if (intent === 'create-todo') {
-		const result: ResultType = await createTodos(todo);
+		const result: ResultType = await putTodo({ todo, todoID });
 		if (!result.ok) {
 			error = result.errorMsg;
 			return error;
@@ -26,6 +26,11 @@ export async function action({ request }: { request: Request }) {
 	}
 	if (intent === 'delete-todo') {
 		await deleteTodo(todoID);
+	}
+
+	if (intent === 'todo-is-done') {
+		const parseStatus = JSON.parse(isDoneTodo as string);
+		await putTodo({ isDone: parseStatus, todoID });
 	}
 	return redirect('/');
 }
