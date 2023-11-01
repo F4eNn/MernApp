@@ -3,16 +3,20 @@ import { FiEdit } from 'react-icons/fi';
 import { AiOutlineCheck } from 'react-icons/ai';
 
 import { TodoItem } from '../../types/types';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useFetcher } from 'react-router-dom';
 import { cn } from '../../utils/utils';
 
 export const Item = ({ todo, _id, isDone: status }: TodoItem) => {
+	const fetcher = useFetcher();
 	let isDone = status;
+	if (fetcher.formData) {
+		isDone = fetcher.formData.get('isDoneTodo') === 'true';
+	}
 	return (
 		<li className='flex justify-between'>
-			<Form method='POST' className='flex items-center gap-6'>
+			<fetcher.Form method='PUT' className='flex items-center gap-6'>
 				<input type='hidden' name='todoID' value={_id} />
-				<input type='hidden' name='isDoneTodo' value={JSON.stringify(isDone)} />
+				<input type='hidden' name='isDoneTodo' value={isDone ? 'false' : 'true'} />
 				<button
 					type='submit'
 					name='intent'
@@ -25,8 +29,8 @@ export const Item = ({ todo, _id, isDone: status }: TodoItem) => {
 				>
 					{isDone && <AiOutlineCheck size='25px' />}
 				</button>
-				<span className={cn('text-xl ', isDone && 'italic line-through text-secondary')}>{todo}</span>
-			</Form>
+				<span className={cn('text-xl ', isDone && 'text-secondary italic line-through ')}>{todo}</span>
+			</fetcher.Form>
 			<div className='items-centers flex '>
 				{!isDone && (
 					<Link
