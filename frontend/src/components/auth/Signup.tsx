@@ -5,7 +5,7 @@ import { FormControl } from '../ui/FormControl';
 import { Label } from '../ui/Label';
 import { Input } from '../ui/Input';
 import { FormValues } from '../../types/types';
-import { signup } from '../../utils/auth';
+import { authenticate} from '../../utils/auth';
 import { ErrorMsg } from '../ui/ErrorMsg';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,12 +23,15 @@ export const Signup = () => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const formValues = Object.fromEntries(formData) as FormValues;
-		const res = await signup(formValues);
+		const res = await authenticate(formValues, 'signup');
 
 		if (res && !res.ok) {
 			const { error } = await res?.json();
 			return setErrors(error);
 		}
+		const { token, email } = await res?.json();
+		localStorage.setItem('token', token);
+		localStorage.setItem('email', email);
 		setErrors(null);
 		return navigate('/');
 	};
