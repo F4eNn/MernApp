@@ -14,7 +14,7 @@ export const action = async ({ request, params }: { request: Request; params: Pa
 	const result: ResultType = await putTodo({ todo, todoID: params.todoID });
 	let error: string;
 	if (!result.ok) {
-		error = result.errorMsg;
+		error = result.error.todo.msg;
 		return error;
 	}
 	return redirect('/');
