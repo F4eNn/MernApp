@@ -13,7 +13,7 @@ export type TodoItems = {
 	data: TodoItem[];
 };
 
-export type ResultType = { error: { [k: string]: { msg: string; path: string } }; ok: boolean };
+export type ResultType = { error: { [k: string]: { msg: string; path: string } }; ok: boolean; status: number };
 
 export type FormValues = {
 	email: string;
