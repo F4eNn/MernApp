@@ -7,6 +7,7 @@ import { FormControl } from '../components/ui/FormControl';
 import { ErrorMsg } from '../components/ui/ErrorMsg';
 import { ResultType } from '../types/types';
 import { putTodo } from '../utils/todos';
+import { getUser } from '../utils/auth';
 
 export const action = async ({ request, params }: { request: Request; params: Params }) => {
 	const formData = await request.formData();
@@ -18,6 +19,15 @@ export const action = async ({ request, params }: { request: Request; params: Pa
 		return error;
 	}
 	return redirect('/');
+};
+
+export const loader = async () => {
+	const res = await getUser();
+	const data = await res.json();
+	if (data.status === 401) {
+		return redirect('/');
+	}
+	return null;
 };
 
 const Edit = () => {

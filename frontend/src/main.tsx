@@ -8,7 +8,7 @@ import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import Auth, { loader as authLoader } from './routes/auth';
 import Index, { action as indexAction, loader as indexLoader } from './routes/Index';
-import Edit, { action as editAction } from './routes/edit';
+import Edit, { action as editAction, loader as loaderEdit } from './routes/edit';
 
 const router = createBrowserRouter([
 	{
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 		children: [
 			{ index: true, element: <Index />, action: indexAction, loader: indexLoader },
-			{ path: navPaths.edit.path, element: <Edit />, action: editAction },
+			{ path: navPaths.edit.path, element: <Edit />, action: editAction, loader: loaderEdit },
 			{
 				path: navPaths.auth.path,
 				element: <Auth />,
