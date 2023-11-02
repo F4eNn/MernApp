@@ -19,6 +19,9 @@ export const action = async ({ request }: { request: Request }) => {
 	switch (intent) {
 		case 'create-todo':
 			const result: ResultType = await putTodo({ todo, todoID });
+			if (result.status === 401) {
+				return redirect('/auth');
+			}
 			if (!result.ok) {
 				error = result.error.todo.msg;
 				return error;
@@ -40,6 +43,9 @@ export const action = async ({ request }: { request: Request }) => {
 
 export const loader = async () => {
 	const todos = await getTodos();
+	if (todos.status === 401 || todos.status === 422) {
+		return redirect('/auth');
+	}
 	return todos;
 };
 
