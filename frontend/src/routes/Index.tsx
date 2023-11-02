@@ -20,7 +20,7 @@ export const action = async ({ request }: { request: Request }) => {
 		case 'create-todo':
 			const result: ResultType = await putTodo({ todo, todoID });
 			if (!result.ok) {
-				error = result.errorMsg;
+				error = result.error.todo.msg;
 				return error;
 			}
 			todoForm.reset();

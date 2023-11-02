@@ -7,14 +7,10 @@ export type PropsWithChildren = {
 export type TodoItem = {
 	_id: string;
 	todo: string;
-	isDone: boolean
+	isDone: boolean;
 };
 export type TodoItems = {
 	data: TodoItem[];
 };
 
-export type ResultType = {
-	errorMsg: string;
-	path: string;
-	ok: boolean;
-};
+export type ResultType = { error: { [k: string]: { msg: string; path: string } }; ok: boolean };
