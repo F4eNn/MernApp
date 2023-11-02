@@ -14,3 +14,9 @@ export type TodoItems = {
 };
 
 export type ResultType = { error: { [k: string]: { msg: string; path: string } }; ok: boolean };
+
+export type FormValues = {
+	email: string;
+	password: string;
+	confirmPassword: string;
+};
