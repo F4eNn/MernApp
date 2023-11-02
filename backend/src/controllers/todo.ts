@@ -22,13 +22,13 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 		if (validationResult(req, res)) return;
 	}
 	try {
-		if (todoID ) {
+		if (todoID) {
 			await updateTodo(todoID, newTitle, isDone);
 			return res.status(200).json({ message: 'Updated successfully!', ok: true });
 		}
 		// checks if sent todo as undefined which is empty string
 		if (newTitle === '') {
-			return res.status(422).json({ errorMsg: "Can't be empty", path: 'todo' });
+			return res.status(422).json({ error: { todo: { msg: "Can't be empty" } }, path: 'todo' });
 		}
 		const todo = new Todo({ todo: newTitle, isDone: false });
 		await todo.save();
