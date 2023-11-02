@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../controllers/auth';
+import { createUser, login } from '../controllers/auth';
 import { body } from 'express-validator';
 import { User } from '../models/user';
 
@@ -31,3 +31,4 @@ const validateAuth = [
 ];
 
 router.post('/signup', validateAuth, createUser);
+router.post('/login', login)
