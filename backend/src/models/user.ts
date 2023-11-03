@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, HydratedDocumentFromSchema } from 'mongoose';
+import { Schema, model, HydratedDocumentFromSchema } from 'mongoose';
 
 const userSchema = new Schema({
 	email: {
@@ -9,10 +9,12 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	todos: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Todo',
-	},
+	todos: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Todo',
+		},
+	],
 });
 
 export const User = model('User', userSchema);
