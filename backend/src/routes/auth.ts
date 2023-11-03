@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { createUser, login } from '../controllers/auth';
 import { body } from 'express-validator';
 import { User } from '../models/user';
+import { checkAuth } from '../controllers/check-auth';
+import { isAuth } from '../middleware/is-auth';
 
 export const router = Router();
 
@@ -10,7 +12,7 @@ const validateAuth = [
 		.isEmail()
 		.withMessage("It's not valid email.")
 		.normalizeEmail()
-		.custom(async (value) => {
+		.custom(async value => {
 			const user = await User.findOne({ email: value });
 			if (user) {
 				return Promise.reject('User already exists!');
@@ -31,4 +33,5 @@ const validateAuth = [
 ];
 
 router.post('/signup', validateAuth, createUser);
-router.post('/login', login)
+router.post('/login', login);
+router.post('/is-authenticated', isAuth, checkAuth);

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { postTodo, getTodo, deleteTodo } from '../controllers/todo';
 import { body } from 'express-validator';
+import { isAuth } from '../middleware/is-auth';
 
 export const router = Router();
 
@@ -14,8 +15,8 @@ const validateTodo = [
 		.withMessage('Min. 3 characters.'),
 ];
 
-router.put('/todo', validateTodo, postTodo);
+router.put('/todo', isAuth, validateTodo, postTodo);
 
-router.get('/todo', getTodo);
+router.get('/todo',isAuth, getTodo);
 
-router.delete('/todo', deleteTodo);
+router.delete('/todo', isAuth, deleteTodo);
