@@ -8,10 +8,12 @@ import { ErrorMsg } from '../ui/ErrorMsg';
 import { authenticate } from '../../utils/auth';
 import { FormValues } from '../../types/types';
 import { useNavigate } from 'react-router-dom';
+import Button from '../ui/Button';
 
 export const Login = () => {
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const [testValues, setTestValues] = useState({ email: '', password: '' });
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -28,16 +30,21 @@ export const Login = () => {
 		return navigate('/');
 	};
 
+	const handleSetTestAccount = () => {
+		setTestValues({ email: 'nadia@doe.com', password: 'niceTry)' });
+	};
+
 	return (
 		<Form title='Login' onSubmit={onSubmit}>
+			<Button title='Test account' className='-mb-4 w-max self-start px-3' onClick={handleSetTestAccount} />
 			<ErrorMsg className='relative top-0' errorMsg={error} />
 			<FormControl>
 				<Label title='E-mail' />
-				<Input name='email' type='text' placeholder='john@doe.com' />
+				<Input defaultValue={testValues.email} name='email' type='text' placeholder='john@doe.com' />
 			</FormControl>
 			<FormControl>
 				<Label title='Password' />
-				<Input type='password' name='password' />
+				<Input defaultValue={testValues.password} type='password' name='password' />
 			</FormControl>
 		</Form>
 	);
