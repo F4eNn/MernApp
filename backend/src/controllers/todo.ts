@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { Todo, TodoType } from '../models/todo';
 import { CustomError } from '../models/custom-error';
 import { validationResult } from '../utils/utils';
+import { User } from '../models/user';
 
 const updateTodo = async (todoID: string, newTodo?: string, isDone?: boolean) => {
 	const todo: TodoType | null = await Todo.findById(todoID);
@@ -30,8 +31,14 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 		if (newTitle === '') {
 			return res.status(422).json({ error: { todo: { msg: "Can't be empty" } }, path: 'todo' });
 		}
-		const todo = new Todo({ todo: newTitle, isDone: false });
-		await todo.save();
+		const todo = new Todo({ todo: newTitle, isDone: false, creator: req.userID });
+		await todo.save()
+		const creator = await User.findById(req.userID);
+		if (!creator) {
+			return new CustomError("Can't add post", 401, 'User not found with relevant ID');
+		}
+		creator.todos.push(todo._id);
+		await creator.save();
 		return res.status(201).json({ message: 'Created Todo' });
 	} catch (error) {
 		console.log(error);
@@ -45,8 +52,9 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 
 export const getTodo = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const todos = await Todo.find();
-		res.status(200).json({ data: todos });
+		const creatorTodos = await User.findById(req.userID).populate('todos')
+		const todosArr = creatorTodos?.todos
+		res.status(200).json({ data: todosArr });
 	} catch (error) {
 		next(new CustomError('Not found any todos', 404));
 	}
