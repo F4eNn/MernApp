@@ -24,6 +24,11 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 	}
 	try {
 		if (todoID) {
+			const user = await User.findById('6544dc7fe6dad3f6fc0a8e4c');
+			if (!(user?._id.toString() === req.userID)) {
+				res.status(401).json({ status: 401 });
+				return new CustomError("Can't update todo", 401, 'User not found with relevant ID');
+			}
 			await updateTodo(todoID, newTitle, isDone);
 			return res.status(200).json({ message: 'Updated successfully!', ok: true });
 		}
@@ -35,7 +40,7 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 		await todo.save();
 		const creator = await User.findById(req.userID);
 		if (!creator) {
-			return new CustomError("Can't add post", 401, 'User not found with relevant ID');
+			return new CustomError("Can't add todo", 401, 'User not found with relevant ID');
 		}
 		creator.todos.push(todo._id);
 		await creator.save();
@@ -73,10 +78,9 @@ export const deleteTodo = async (req: Request, res: Response, next: NextFunction
 		}
 		await Todo.findByIdAndDelete(todoID);
 		await User.findByIdAndUpdate(req.userID, { $pull: { todos: todoID } });
-		
+
 		res.status(200).json({ message: 'Delete successfully', ok: true });
 	} catch (error) {
-		console.log();
 		if (error instanceof CustomError) {
 			return next(error);
 		}
