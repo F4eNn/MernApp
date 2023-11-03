@@ -23,7 +23,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 		const newUser: UserModelType = new User({ email, password: hashedPassword });
 		const { email: userEmail, _id } = await newUser.save();
 		const token = addToken(userEmail, _id.toString());
-		res.status(201).json({ message: 'created user', token });
+		res.status(201).json({ message: 'created user', token, email });
 	} catch (error) {
 		if (error instanceof CustomError) {
 			return next(error);
