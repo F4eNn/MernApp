@@ -13,6 +13,9 @@ export const action = async ({ request, params }: { request: Request; params: Pa
 	const formData = await request.formData();
 	const { todo } = Object.fromEntries(formData);
 	const result: ResultType = await putTodo({ todo, todoID: params.todoID });
+	if (result.status === 401) {
+		return redirect('/auth');
+	}
 	let error: string;
 	if (!result.ok) {
 		error = result.error.todo.msg;
