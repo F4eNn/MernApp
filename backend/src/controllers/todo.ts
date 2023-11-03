@@ -32,7 +32,7 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 			return res.status(422).json({ error: { todo: { msg: "Can't be empty" } }, path: 'todo' });
 		}
 		const todo = new Todo({ todo: newTitle, isDone: false, creator: req.userID });
-		await todo.save()
+		await todo.save();
 		const creator = await User.findById(req.userID);
 		if (!creator) {
 			return new CustomError("Can't add post", 401, 'User not found with relevant ID');
@@ -52,8 +52,9 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 
 export const getTodo = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const creatorTodos = await User.findById(req.userID).populate('todos')
-		const todosArr = creatorTodos?.todos
+		const creatorTodos = await User.findById(req.userID).populate('todos');
+		const todosArr = creatorTodos?.todos;
+		console.log(todosArr);
 		res.status(200).json({ data: todosArr });
 	} catch (error) {
 		next(new CustomError('Not found any todos', 404));
@@ -63,10 +64,16 @@ export const getTodo = async (req: Request, res: Response, next: NextFunction) =
 export const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
 	const todoID = req.body.todoID;
 	try {
-		const todo = await Todo.findByIdAndDelete(todoID);
+		const todo = await Todo.findById(todoID);
 		if (!todo) {
 			throw new CustomError("Todo doesn't exist", 404, 'Could not delete todo');
 		}
+		if (todo.creator?.toString() !== req.userID) {
+			throw new CustomError('Not allowed to delete this todo', 401);
+		}
+		await Todo.findByIdAndDelete(todoID);
+		await User.findByIdAndUpdate(req.userID, { $pull: { todos: todoID } });
+		
 		res.status(200).json({ message: 'Delete successfully', ok: true });
 	} catch (error) {
 		console.log();
