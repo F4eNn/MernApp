@@ -24,7 +24,7 @@ export const postTodo = async (req: Request, res: Response, next: NextFunction) 
 	}
 	try {
 		if (todoID) {
-			const user = await User.findById('6544dc7fe6dad3f6fc0a8e4c');
+			const user = await User.findById(req.userID);
 			if (!(user?._id.toString() === req.userID)) {
 				res.status(401).json({ status: 401 });
 				return new CustomError("Can't update todo", 401, 'User not found with relevant ID');
@@ -59,7 +59,6 @@ export const getTodo = async (req: Request, res: Response, next: NextFunction) =
 	try {
 		const creatorTodos = await User.findById(req.userID).populate('todos');
 		const todosArr = creatorTodos?.todos;
-		console.log(todosArr);
 		res.status(200).json({ data: todosArr });
 	} catch (error) {
 		next(new CustomError('Not found any todos', 404));

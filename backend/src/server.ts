@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import bodyParser from 'body-parser';
+import helmet from 'helmet';
 
 import express from 'express';
 import mongoose from 'mongoose';
@@ -11,6 +12,8 @@ import { handleError } from './middleware/error-handler';
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.lhyndcn.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
 const server = express();
+
+server.use(helmet());
 
 server.use(bodyParser.json());
 
