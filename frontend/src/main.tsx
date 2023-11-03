@@ -4,7 +4,7 @@ import './index.css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { navPaths } from './constants/navigation';
-import Root from './routes/root';
+import Root, { loader as rootLoader, shouldRevalidate as shouldRevalidateRoot } from './routes/root';
 import ErrorPage from './routes/error-page';
 import Auth, { loader as authLoader } from './routes/auth';
 import Index, { action as indexAction, loader as indexLoader } from './routes/Index';
@@ -14,6 +14,8 @@ const router = createBrowserRouter([
 	{
 		path: navPaths.home.path,
 		element: <Root />,
+		loader: rootLoader,
+		shouldRevalidate: shouldRevalidateRoot,
 		errorElement: <ErrorPage />,
 		children: [
 			{ index: true, element: <Index />, action: indexAction, loader: indexLoader },

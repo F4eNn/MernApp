@@ -14,6 +14,12 @@ export const loader = async () => {
 	const email = localStorage.getItem('email');
 	return { user, email };
 };
+
+export const shouldRevalidate = ({ currentUrl }: { currentUrl: URL }) => {
+	return currentUrl.pathname === '/auth';
+};
+
+
 const Root = () => {
 	const { user, email } = useLoaderData() as any;
 
