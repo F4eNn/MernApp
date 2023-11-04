@@ -45,14 +45,13 @@ const Root = () => {
 										</span>
 									</li>
 									<li>
-										<Link
-											to='/auth'
+										<a
+											href='/auth'
 											className='bg-secondary hover:bg-secondary/80 colors-300  rounded-md px-3 py-1.5 font-[500] text-white'
 											onClick={logout}
-											reloadDocument
 										>
 											Logout
-										</Link>
+										</a>
 									</li>
 								</>
 							) : (
