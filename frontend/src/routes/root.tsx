@@ -1,7 +1,8 @@
-import { Outlet, NavLink, Link, useLoaderData } from 'react-router-dom';
+import { Outlet, NavLink, Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { Wrapper } from '../components/ui/Wrapper';
 import { navPaths } from '../constants/navigation';
 import { getUser } from '../utils/auth';
+import Button from '../components/ui/Button';
 
 const navArray = [
 	['Login', `${navPaths.auth.path}?mode=login`],
@@ -21,10 +22,12 @@ export const shouldRevalidate = ({ currentUrl }: { currentUrl: URL }) => {
 
 const Root = () => {
 	const { user, email } = useLoaderData() as any;
+	const navigate = useNavigate();
 
 	const logout = () => {
 		localStorage.removeItem('token');
 		localStorage.removeItem('email');
+		navigate(0);
 	};
 
 	return (
@@ -45,13 +48,11 @@ const Root = () => {
 										</span>
 									</li>
 									<li>
-										<a
-											href='/auth'
-											className='bg-secondary hover:bg-secondary/80 colors-300  rounded-md px-3 py-1.5 font-[500] text-white'
+										<Button
 											onClick={logout}
-										>
-											Logout
-										</a>
+											title='logout'
+											className='bg-secondary hover:bg-secondary/80 colors-300   px-3   '
+										/>
 									</li>
 								</>
 							) : (
