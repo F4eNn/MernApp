@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./build && tsc && node ./build/server.js",
     "start": "npm run build && node ./build/server.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
