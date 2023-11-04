@@ -19,7 +19,7 @@ export const authenticate = async (credentials: FormValues, endpoint: 'signup' |
 };
 export const getUser = async () => {
     const token = localStorage.getItem('token');
-	const res = await fetch('http://localhost:8080/is-authenticated', {
+	const res = await fetch(`${BACKEND_URL}/is-authenticated`, {
 		method: 'POST',
 		headers: { Authorization: `Bearer ${token}` },
 	});
