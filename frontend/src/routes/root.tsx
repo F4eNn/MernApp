@@ -19,7 +19,6 @@ export const shouldRevalidate = ({ currentUrl }: { currentUrl: URL }) => {
 	return currentUrl.pathname === '/auth';
 };
 
-
 const Root = () => {
 	const { user, email } = useLoaderData() as any;
 
