@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="" rel="noopener">
+  <a href="https://main--illustrious-platypus-807930.netlify.app/#/auth" rel="noopener">
  <img width=100% height=250px src="./.github/Screenshot_1.png" alt="Project logo"></a>
 
 </p>
 
-<h3 align="center">mern-app</h3>
+<a href="https://main--illustrious-platypus-807930.netlify.app/#/auth"> <h3 align="center">mern-app</h3> </a>
 
 <div align="center">
 
